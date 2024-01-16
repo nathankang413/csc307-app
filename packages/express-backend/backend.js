@@ -34,16 +34,21 @@ const users = {
 };
 
 const findUserByName = (name) => {
-    return users["users_list"].filter(
+    return users.users_list.filter(
         (user) => user.name === name
     );
 };
 
 const findUserById = (id) => {
-    return users["users_list"].find(
+    return users.users_list.find(
         (user) => user.id === id
     );
 };
+
+const addUser = (user) => {
+    users.users_list.push(user);
+    return user;
+}
 
 // -- Endpoints -- //
 app.use(express.json());
@@ -72,6 +77,12 @@ app.get("/users/:id", (req, res) => {
         res.send(result);
     }
 });
+
+app.post("/users", (req, res) => {
+    const userToAdd = req.body;
+    addUser(userToAdd);
+    res.send();
+})
 
 app.listen(port, () => {
     console.log(

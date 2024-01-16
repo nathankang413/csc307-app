@@ -50,6 +50,22 @@ const addUser = (user) => {
     return user;
 }
 
+const deleteUserById = (id) => {
+    const user = users.users_list.find(
+        (user) => user.id === id
+    )
+    if (user !== undefined) {
+        users.users_list = users.users_list.filter(
+            (user) => user.id !== id
+        )
+        console.log(`Removed user ${id}`)
+        return true
+    } else {
+        console.log(`User ${id} not found`)
+        return false
+    }
+}
+
 // -- Endpoints -- //
 app.use(express.json());
 
@@ -82,7 +98,17 @@ app.post("/users", (req, res) => {
     const userToAdd = req.body;
     addUser(userToAdd);
     res.send();
-})
+});
+
+app.delete("/users/:id", (req, res) => {
+    const id = req.params.id
+    let result = deleteUserById(id)
+    if (result) {
+        res.status(204).send()
+    } else {
+        res.status(404).send("Resource not found.")
+    }
+});
 
 app.listen(port, () => {
     console.log(

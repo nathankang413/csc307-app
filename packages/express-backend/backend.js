@@ -34,17 +34,19 @@ const users = {
     ]
 };
 
-const generateUid = () => Math.trunc(Math.random() * 1000);
+const generateUid = () => Math.trunc(Math.random() * 100000).toString();
 
+
+// --- Controllers --- //
 const findUserByName = (name) => {
-    console.log(`Getting user. name: ${name}`)
+    console.log(`Getting user by name: ${name}`)
     return users.users_list.filter(
         (user) => user.name === name
     );
 };
 
 const findUserById = (id) => {
-    console.log(`Getting user. id: ${id}`)
+    console.log(`Getting user by id: ${id}`)
     return users.users_list.find(
         (user) => user.id === id
     );
@@ -52,28 +54,26 @@ const findUserById = (id) => {
 
 const addUser = (user) => {
     user.id = generateUid();
+
     console.log(`Adding user: ${user.id} ${user.name} ${user.job}`)
     users.users_list.push(user);
     return user;
 }
 
 const deleteUserById = (id) => {
-    const user = users.users_list.find(
+    const index = users.users_list.findIndex(
         (user) => user.id === id
     )
-    if (user !== undefined) {
-        users.users_list = users.users_list.filter(
-            (user) => user.id !== id
-        )
-        console.log(`Removed user ${id}`)
+    if (index >= 0) {
+        console.log(`Removed user with id: ${id}`)
+        users.users_list.splice(index, 1)
         return true
-    } else {
-        console.log(`User ${id} not found`)
-        return false
     }
+    console.log(`Couldn't remove user id ${id}. Not found.`)
+    return false
 }
 
-// -- Routes -- //
+// --- Routes --- //
 app.use(cors());
 app.use(express.json());
 

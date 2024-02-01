@@ -35,7 +35,7 @@ app.get("/users/:id", (req, res) => {
 app.post("/users", (req, res) => {
 	const userToAdd = req.body;
 	addUser(userToAdd)
-		.then((result) => res.status(201).send(result))
+		.then((result) => res.status(201).send({user: result}))
 		.catch((err) => res.status(400).send(err));
 });
 
